@@ -2,16 +2,16 @@ package org.wcs.myblog.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+import org.wcs.myblog.dto.ProfileDTO;
 import org.wcs.myblog.dto.UserLoginDTO;
 import org.wcs.myblog.dto.UserRegistrationDTO;
 import org.wcs.myblog.model.User;
 import org.wcs.myblog.security.AuthenticationService;
 import org.wcs.myblog.service.UserService;
 
+import java.security.Principal;
 import java.util.Set;
 
 @RestController
@@ -42,5 +42,13 @@ public class AuthController {
                 userLoginDTO.getPassword()
         );
         return ResponseEntity.ok(token);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<ProfileDTO> getProfile(Principal principal) {
+        String email = principal.getName();
+        ProfileDTO profile = new ProfileDTO();
+        profile.setEmail(email);
+        return ResponseEntity.ok(profile);
     }
 }
