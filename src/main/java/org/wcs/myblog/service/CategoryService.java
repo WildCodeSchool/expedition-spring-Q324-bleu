@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.wcs.myblog.dto.CategoryDTO;
+import org.wcs.myblog.exception.ResourceNotFoundException;
 import org.wcs.myblog.mapper.CategoryMapper;
 import org.wcs.myblog.model.Category;
 import org.wcs.myblog.repository.CategoryRepository;
@@ -28,7 +29,7 @@ public class CategoryService {
     }
 
     public CategoryDTO getCategoryById(Long id) {
-        Category category = categoryRepository.findById(id).orElse(null);
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         return categoryMapper.convertToDTO(category);
     }
 
